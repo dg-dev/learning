@@ -1,13 +1,41 @@
 public class SudokuCell {
+	private int id = -1;
+	private int row = -1;
+	private int column = -1;
+	private int box = -1;
 	private int number = 0;
 	private boolean[] possibilities = new boolean[9];
 
-	public SudokuCell() {
-		this(0);
+	public SudokuCell(int id) {
+		this(id, 0);
 	}
 	
-	public SudokuCell(int n) {
+	public SudokuCell(int id, int n) {
+		setId(id);
 		setNumber(n);
+	}
+
+	public void setId(int id) {
+		this.id = id;
+		this.row = calculateRow(this.id);
+		this.column = calculateColumn(this.id);
+		this.box = calculateBox(this.id);
+	}
+
+	public int getId() {
+		return this.id;
+	}
+	
+	public int getRow() {
+		return this.row;
+	}
+
+	public int getColumn() {
+		return this.column;
+	}
+	
+	public int getBox() {
+		return this.box;
 	}
 	
 	public static int calculateRow(int index) {
@@ -42,7 +70,7 @@ public class SudokuCell {
 		}
 		return changed;
 	}
-	
+
 	public void setNumber(int n) {
 		if (n == 0) {
 			for (int i = 0; i < 9; i++)

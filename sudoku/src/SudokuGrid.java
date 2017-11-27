@@ -28,7 +28,7 @@ public class SudokuGrid {
 				}
 			}
 			if ((num >= 0) || (num <= 9))
-				puzzle[i] = new SudokuCell(num);
+				puzzle[i] = new SudokuCell(i, num);
 			else
 				throw new IllegalArgumentException("invalid puzzle input " + num);
 		}
@@ -38,9 +38,9 @@ public class SudokuGrid {
 			boxes[i] = new SudokuContainer();
 		}
 		for (int i = 0; i < 81; i++) {
-			rows[SudokuCell.calculateRow(i)].add(puzzle[i]);
-			columns[SudokuCell.calculateColumn(i)].add(puzzle[i]);
-			boxes[SudokuCell.calculateBox(i)].add(puzzle[i]);
+			rows[puzzle[i].getRow()].add(puzzle[i]);
+			columns[puzzle[i].getColumn()].add(puzzle[i]);
+			boxes[puzzle[i].getBox()].add(puzzle[i]);
 		}
 	}
 
