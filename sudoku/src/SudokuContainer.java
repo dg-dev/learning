@@ -27,7 +27,7 @@ public class SudokuContainer {
 			}
 		}	
 	}
-	
+
 	public List<SudokuCell> getCellsContainingPossibility(int possibility) {
 		List<SudokuCell> listOfCells = new ArrayList<SudokuCell>();
 		for (int i = 0; i < nextIndex; i++)
@@ -102,6 +102,16 @@ public class SudokuContainer {
 		return false;		
 	}
 
+	public boolean setPointed() {
+		int prevBox = -1;
+		for (int i = 0; i < nextIndex; i++) {
+			if ((i > 0) && (cells[i].getBox() != prevBox))
+				return false; // container must contain cells from the same box or it returns false
+			prevBox = cells[i].getBox();
+		}
+		return false;
+	}
+	
 	public boolean checkContainer() {
 		boolean correct = true;
 		int[] count = new int[9];

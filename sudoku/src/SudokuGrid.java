@@ -104,6 +104,12 @@ public class SudokuGrid {
 					continue outer;
 				}
 			}
+			for (int i = 0; i < 9; i++) {
+				if (boxes[i].setPointed() == true) {
+					changed = true;
+					continue outer;
+				}
+			}
 		}
 		for (int i = 0; i < 81; i++)
 			if (puzzle[i].getTotalPossible() > 0)
