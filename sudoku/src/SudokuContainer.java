@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public class SudokuContainer {
 	private SudokuCell[] cells = new SudokuCell[9];
 	private int nextIndex = 0;
@@ -24,7 +27,15 @@ public class SudokuContainer {
 			}
 		}	
 	}
-		
+	
+	public List<SudokuCell> getCellsContainingPossibility(int possibility) {
+		List<SudokuCell> listOfCells = new ArrayList<SudokuCell>();
+		for (int i = 0; i < nextIndex; i++)
+			if (cells[i].getPossibilities()[possibility-1] == true)
+				listOfCells.add(cells[i]);
+		return listOfCells;
+	}
+	
 	public boolean setNakedSingles() {
 		boolean changed = false;
 		for (int i = 0; i < nextIndex; i++)
@@ -35,24 +46,10 @@ public class SudokuContainer {
 	
 	public boolean setHiddenSingles() {
 		boolean changed = false;
-		int[] count = new int[9];
-		SudokuCell[] lastSeen = new SudokuCell[9];
-		for (int i = 0; i < 9; i++) {
-			lastSeen[i] = null;
-			count[i] = 0;
-		}
-		for (int i = 0; i < nextIndex; i++) {
-			boolean[] possibilities = cells[i].getPossibilities();
-			for (int j = 0; j < 9; j++) {
-				if (possibilities[j] == true) {
-					count[j]++;
-					lastSeen[j] = cells[i];
-				}
-			}
-		}
-		for (int i = 0; i < 9; i++) {
-			if (count[i] == 1) {
-				lastSeen[i].setNumber(i + 1);
+		for (int i = 1; i <= 9; i++) {
+			List<SudokuCell> listOfCells = getCellsContainingPossibility(i);
+			if (listOfCells.size() == 1) {
+				listOfCells.get(0).setNumber(i);
 				changed = true;
 			}
 		}
