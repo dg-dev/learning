@@ -161,4 +161,25 @@ public class SudokuCell {
 			return false;
 		return true;
 	}
+	
+	public boolean isInSameRow(SudokuCell... otherCells) {
+		for (SudokuCell otherCell : otherCells)
+			if (this.getRow() != otherCell.getRow())
+				return false;
+		return true;
+	}
+	
+	public boolean isInSameColumn(SudokuCell... otherCells) {
+		for (SudokuCell otherCell : otherCells)
+			if (this.getColumn() != otherCell.getColumn())
+				return false;
+		return true;
+	}
+	
+	public boolean isInSameBox(SudokuCell... otherCells) {
+		for (SudokuCell otherCell : otherCells)
+			if (this.getBox() != otherCell.getBox())
+				return false;
+		return true;
+	}
 }

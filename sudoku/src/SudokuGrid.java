@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class SudokuGrid {
 	private SudokuCell[] puzzle = new SudokuCell[81];
 	private SudokuContainer[] rows = new SudokuContainer[9];
@@ -62,6 +64,36 @@ public class SudokuGrid {
 		}
 	}
 
+	public boolean setPointed(SudokuContainer box) {
+		for (int i = 1; i <= 9; i++) {
+			List<SudokuCell> listOfCells = box.getCellsContainingPossibility(i);
+			if ((listOfCells.size() == 2) || (listOfCells.size() == 3)) {
+				boolean changed = false;
+				SudokuCell firstCell = null;
+				SudokuCell[] restOfCells = null;
+				SudokuContainer container = null;
+				firstCell = listOfCells.get(0);
+				listOfCells.remove(0);
+				restOfCells = listOfCells.toArray(new SudokuCell[listOfCells.size()]);
+				if (firstCell.isInSameRow(restOfCells))
+					container = rows[firstCell.getRow()];
+				else if (firstCell.isInSameColumn(restOfCells))
+					container = columns[firstCell.getColumn()];
+				if (container == null)
+					continue;
+				for (SudokuCell containerCell : container.getCells()) {
+					if (firstCell.getBox() == containerCell.getBox())
+						continue;
+					if (containerCell.removePossibility(i) == true)
+						changed = true;
+				}
+				if (changed == true)
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean solve() {
 		boolean changed = true;
 		outer:
@@ -105,7 +137,7 @@ public class SudokuGrid {
 				}
 			}
 			for (int i = 0; i < 9; i++) {
-				if (boxes[i].setPointed() == true) {
+				if (setPointed(boxes[i]) == true) {
 					changed = true;
 					continue outer;
 				}
