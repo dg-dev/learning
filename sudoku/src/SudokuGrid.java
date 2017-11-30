@@ -103,20 +103,34 @@ public class SudokuGrid {
 				rows[i].updatePossibilities();
 				columns[i].updatePossibilities();
 				boxes[i].updatePossibilities();
-			}	
-			for (int i = 0; i < 9; i++) {
-				if ((rows[i].setNakedSingles() == true) || 
-						(columns[i].setNakedSingles() == true) || 
-						(boxes[i].setNakedSingles() == true)) {
-					changed = true;
-					continue outer;
-				}
 			}
 			for (int i = 0; i < 9; i++) {
 				if ((rows[i].setHiddenSingles() == true) ||
 						(columns[i].setHiddenSingles() == true) ||
 						(boxes[i].setHiddenSingles() == true)) {
 					changed = true;
+					System.out.println("Found Hidden Single!");
+					this.printDebug();
+					continue outer;
+				}
+			}
+			for (int i = 0; i < 9; i++) {
+				if ((rows[i].setHiddenPairs() == true) ||
+						(columns[i].setHiddenPairs() == true) ||
+						(boxes[i].setHiddenPairs() == true)) {
+					changed = true;
+					System.out.println("Found Hidden Pair!");
+					this.printDebug();
+					continue outer;
+				}
+			}
+			for (int i = 0; i < 9; i++) {
+				if ((rows[i].setNakedSingles() == true) || 
+						(columns[i].setNakedSingles() == true) || 
+						(boxes[i].setNakedSingles() == true)) {
+					changed = true;
+					System.out.println("Found Naked Single!");
+					this.printDebug();
 					continue outer;
 				}
 			}
@@ -125,6 +139,8 @@ public class SudokuGrid {
 						(columns[i].setNakedPairs() == true) ||
 						(boxes[i].setNakedPairs() == true)) {
 					changed = true;
+					System.out.println("Found Naked Pair!");
+					this.printDebug();
 					continue outer;
 				}
 			}
@@ -133,12 +149,16 @@ public class SudokuGrid {
 						(columns[i].setNakedTriples() == true) ||
 						(boxes[i].setNakedTriples() == true)) {
 					changed = true;
+					System.out.println("Found Naked Triple!");
+					this.printDebug();
 					continue outer;
 				}
 			}
 			for (int i = 0; i < 9; i++) {
 				if (setPointed(boxes[i]) == true) {
 					changed = true;
+					System.out.println("Found Pointed!");
+					this.printDebug();
 					continue outer;
 				}
 			}
