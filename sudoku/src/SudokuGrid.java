@@ -125,6 +125,16 @@ public class SudokuGrid {
 				}
 			}
 			for (int i = 0; i < 9; i++) {
+				if ((rows[i].setHiddenTriple() == true) ||
+						(columns[i].setHiddenTriple() == true) ||
+						(boxes[i].setHiddenTriple() == true)) {
+					changed = true;
+					System.out.println("Found Hidden Triple!");
+					this.printDebug();
+					continue outer;
+				}
+			}
+			for (int i = 0; i < 9; i++) {
 				if ((rows[i].setNakedSingles() == true) || 
 						(columns[i].setNakedSingles() == true) || 
 						(boxes[i].setNakedSingles() == true)) {

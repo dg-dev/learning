@@ -84,6 +84,24 @@ public class SudokuContainer {
 		return false;
 	}
 	
+	public boolean setHiddenTriple() {
+		List<List<SudokuCell>> triples = new ArrayList<List<SudokuCell>>();
+		// make a list of all unique triples
+		for (int i = 0; i < nextIndex; i++) {
+			for (int j = i + 1; j < nextIndex; j++) {
+				for (int k = j + 1; k < nextIndex; k++) {
+					List<SudokuCell> triple = new ArrayList<SudokuCell>();
+					triple.add(cells[i]);
+					triple.add(cells[j]);
+					triple.add(cells[k]);
+					triples.add(triple);
+				}				
+			}			
+		}
+		// check if 3 different possibilities are found in each triple
+		return false;
+	}
+	
 	public boolean setNakedSingles() {
 		boolean changed = false;
 		for (int i = 0; i < nextIndex; i++)
