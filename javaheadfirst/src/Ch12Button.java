@@ -1,23 +1,51 @@
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.*;
 
-public class Ch12Button implements ActionListener {
+class Ch12Button {
 	private JFrame frame;
-	private JButton button;
+	private JButton button1;
+	private JButton button2;
+	private JPanel panel;
+	private JLabel label;
+	private Color color;
 	
 	public void go() {
 		frame = new JFrame("Booyah");
-		button = new JButton("CLICK");
-		button.addActionListener(this);
-		frame.getContentPane().add(button);
+		button1 = new JButton("CLICK");
+		button2 = new JButton("WEE");
+		panel = new MyDrawingPanel();
+		label = new JLabel("testing 123");
+		color = new Color(0, 0, 0);
+		button1.addActionListener(new MyBottomButtonListener());
+		button2.addActionListener(new MyLeftButtonListener());
+		frame.getContentPane().add(BorderLayout.CENTER, panel);
+		frame.getContentPane().add(BorderLayout.SOUTH, button1);
+		frame.getContentPane().add(BorderLayout.EAST, button2);
+		frame.getContentPane().add(BorderLayout.WEST, label);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(640, 480);
-		frame.setVisible(true);	
+		frame.setVisible(true);
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-		button.setText("CLICKED");
-		frame.setSize(320, 240);
+	class MyBottomButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			color = new Color((int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256));
+			frame.repaint();
+		}	
+	}
+	
+	class MyLeftButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			label.setText("RANDOM NUMBER " + (int) (Math.random() * 256));
+		}	
+	}
+	
+	class MyDrawingPanel extends JPanel {
+		public void paintComponent(Graphics g) {
+			g.setColor(color);
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		}
 	}
 	
 	public static void main(String[] args) {
