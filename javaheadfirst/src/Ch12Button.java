@@ -9,6 +9,7 @@ class Ch12Button {
 	private JPanel panel;
 	private JLabel label;
 	private Color color;
+	private int x, y;
 	
 	public void go() {
 		frame = new JFrame("Booyah");
@@ -26,12 +27,19 @@ class Ch12Button {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(640, 480);
 		frame.setVisible(true);
+		for (int i = 0; i < 100; i++) {
+			frame.repaint();
+			try {
+				Thread.sleep(50);
+			} catch (Exception exc) { }
+			x++;
+			y++;
+		}
 	}
 	
 	class MyBottomButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			color = new Color((int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256));
-			frame.repaint();
 		}	
 	}
 	
@@ -45,6 +53,8 @@ class Ch12Button {
 		public void paintComponent(Graphics g) {
 			g.setColor(color);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+			g.setColor(new Color(123, 213, 231));
+			g.fillOval(x, y, 25, 25);
 		}
 	}
 	
