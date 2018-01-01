@@ -4,9 +4,7 @@ import java.awt.Event.*;
 
 public class BeatBox {
 	JFrame frame = new JFrame("BeatBox");
-	JPanel labelPanel = new JPanel();
 	JPanel buttonPanel = new JPanel();
-	JPanel checkBoxPanel = new JPanel();
 	JButton startButton = new JButton("Start");
 	JButton stopButton = new JButton("Stop");
 	JButton upTempoButton = new JButton("UP Tempo");
@@ -14,18 +12,26 @@ public class BeatBox {
 	
 	public void open() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// labels
-		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.Y_AXIS));
-		labelPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		for (int i = 0; i < 16; i++)
-			labelPanel.add(new Label("Drum #" + i));
-		frame.getContentPane().add(labelPanel, BorderLayout.WEST);
-		// checkboxes
-		checkBoxPanel.setLayout(new GridLayout(16, 16));
-		for (int i = 0; i < 256; i++) {
-			checkBoxPanel.add(new JCheckBox());
+		// labels & checkboxes
+		JPanel beatsPanel = new JPanel();
+		beatsPanel.setLayout(new BoxLayout(beatsPanel, BoxLayout.Y_AXIS));
+		beatsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		for (int i = 0; i < 16; i++) {
+			JPanel labelAndCheckBoxPanel = new JPanel();
+			labelAndCheckBoxPanel.setLayout(new BorderLayout());
+			labelAndCheckBoxPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+			labelAndCheckBoxPanel.add(new JLabel("Drum #" + i), BorderLayout.WEST);
+			for (int j = 0; j < 16; j++) {
+				JPanel checkBoxPanel = new JPanel();
+				checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.X_AXIS));
+				checkBoxPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+				for (int k = 0; k < 16; k++)
+					checkBoxPanel.add(new JCheckBox());
+				labelAndCheckBoxPanel.add(checkBoxPanel, BorderLayout.EAST);
+			}
+			beatsPanel.add(labelAndCheckBoxPanel);
 		}
-		frame.getContentPane().add(checkBoxPanel, BorderLayout.CENTER);
+		frame.getContentPane().add(beatsPanel, BorderLayout.WEST);
 		// buttons
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
