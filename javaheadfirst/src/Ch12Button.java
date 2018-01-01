@@ -40,6 +40,7 @@ class Ch12Button {
 	class MyBottomButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			color = new Color((int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256));
+			frame.repaint();
 		}	
 	}
 	
@@ -49,6 +50,7 @@ class Ch12Button {
 		}	
 	}
 	
+	@SuppressWarnings("serial")
 	class MyDrawingPanel extends JPanel {
 		public void paintComponent(Graphics g) {
 			g.setColor(color);
