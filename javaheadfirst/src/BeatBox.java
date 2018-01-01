@@ -12,10 +12,13 @@ public class BeatBox {
 	
 	public void open() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		// labels & checkboxes
 		JPanel beatsPanel = new JPanel();
 		beatsPanel.setLayout(new BoxLayout(beatsPanel, BoxLayout.Y_AXIS));
-		beatsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		for (int i = 0; i < 16; i++) {
 			JPanel labelAndCheckBoxPanel = new JPanel();
 			labelAndCheckBoxPanel.setLayout(new BorderLayout());
@@ -31,15 +34,24 @@ public class BeatBox {
 			}
 			beatsPanel.add(labelAndCheckBoxPanel);
 		}
-		frame.getContentPane().add(beatsPanel, BorderLayout.WEST);
+		mainPanel.add(beatsPanel, BorderLayout.WEST);
+		// texteditarea
+		JTextArea debugArea = new JTextArea("testing, testing... 1 2 3 testing, testing... 1 2 3 testing, testing... 1 2 3");
+		debugArea.setLineWrap(true);
+		debugArea.setWrapStyleWord(true);
+		debugArea.setPreferredSize(new Dimension(350,300));
+		JScrollPane myScrollPane = new JScrollPane(debugArea);
+		myScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		myScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		mainPanel.add(myScrollPane, BorderLayout.CENTER);
 		// buttons
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-		buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		buttonPanel.add(startButton);
 		buttonPanel.add(stopButton);
 		buttonPanel.add(upTempoButton);
 		buttonPanel.add(downTempoButton);
-		frame.getContentPane().add(buttonPanel, BorderLayout.EAST);
+		mainPanel.add(buttonPanel, BorderLayout.EAST);
+		// display
 		frame.pack();
 		frame.setVisible(true);
 	}
