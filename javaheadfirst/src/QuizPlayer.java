@@ -60,6 +60,7 @@ public class QuizPlayer {
 		display.setText("");
 		questionSet.clear();
 		questionIndex = 0;
+		isQuestion = false;
 		try {
 			String line = null;
 			BufferedReader br = new BufferedReader(new FileReader(file));
