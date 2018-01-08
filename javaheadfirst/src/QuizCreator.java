@@ -28,10 +28,10 @@ public class QuizCreator {
 		mainPanel.add(questionLabel);
 
 		question = new JTextArea();
-		question.setPreferredSize(new Dimension(350, 175));
 		question.setLineWrap(true);
 		question.setWrapStyleWord(true);
 		JScrollPane questionScroll = new JScrollPane(question);
+		questionScroll.setPreferredSize(new Dimension(350, 175));
 		questionScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		questionScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		mainPanel.add(questionScroll);
@@ -40,10 +40,10 @@ public class QuizCreator {
 		mainPanel.add(answerLabel);
 		
 		answer = new JTextArea();
-		answer.setPreferredSize(new Dimension(350, 175));
 		answer.setLineWrap(true);
 		answer.setWrapStyleWord(true);
 		JScrollPane answerScroll = new JScrollPane(answer);
+		answerScroll.setPreferredSize(new Dimension(350, 175));
 		answerScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		answerScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		mainPanel.add(answerScroll);
