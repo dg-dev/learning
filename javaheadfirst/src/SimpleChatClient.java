@@ -7,25 +7,30 @@ public class SimpleChatClient {
 	JFrame frame;
 	
 	public void gui() {
+		JTextArea chatDisplay;
+		JScrollPane chatDisplayScroll;
+		JPanel sendPanel;
+		JTextField sendText;
+		JButton sendButton;
 		frame = new JFrame("SimpleChatClient");
-		JTextArea chatDisplay = new JTextArea();
-		chatDisplay.setPreferredSize(new Dimension(455, 300));
+		chatDisplay = new JTextArea();
+		chatDisplay.setPreferredSize(new Dimension(400, 300));
 		chatDisplay.setEditable(false);
 		chatDisplay.setLineWrap(true);
 		chatDisplay.setWrapStyleWord(true);
-		JScrollPane chatDisplayScroll = new JScrollPane(chatDisplay);
+		chatDisplayScroll = new JScrollPane(chatDisplay);
 		chatDisplayScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		chatDisplayScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		frame.add(chatDisplayScroll, BorderLayout.CENTER);
-		JPanel sendPanel = new JPanel();
+		sendPanel = new JPanel();
 		sendPanel.setLayout(new BorderLayout());
-		JTextField sendText = new JTextField(30);
+		sendText = new JTextField(30);
 		sendPanel.add(sendText, BorderLayout.CENTER);
-		JButton sendButton = new JButton("SEND");
+		sendButton = new JButton("SEND");
 		sendPanel.add(sendButton, BorderLayout.EAST);
 		frame.add(sendPanel, BorderLayout.SOUTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(500, 400);
+		frame.pack();
 		frame.setVisible(true);
 	}
 	
