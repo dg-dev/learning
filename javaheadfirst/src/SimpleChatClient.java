@@ -1,12 +1,16 @@
 import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 
 public class SimpleChatClient {
 	private JFrame frame;
 	private JTextArea chatDisplay;
 	private JTextField sendText;
+	private Socket sock;
+	private PrintWriter writer;
+	private BufferedReader reader;
 	
 	public void go() {
 		this.gui();
@@ -17,7 +21,6 @@ public class SimpleChatClient {
 		JScrollPane chatDisplayScroll;
 		JPanel sendPanel;
 		JButton sendButton;
-		SendButtonListener sendButtonListener = new SendButtonListener();
 		frame = new JFrame("SimpleChatClient");
 		chatDisplay = new JTextArea();
 		chatDisplay.setEditable(false);
@@ -31,10 +34,10 @@ public class SimpleChatClient {
 		sendPanel = new JPanel();
 		sendPanel.setLayout(new BorderLayout());
 		sendText = new JTextField();
-		sendText.addActionListener(sendButtonListener);
+		sendText.addActionListener(new SendButtonListener());
 		sendPanel.add(sendText, BorderLayout.CENTER);
 		sendButton = new JButton("SEND");
-		sendButton.addActionListener(sendButtonListener);
+		sendButton.addActionListener(new SendButtonListener());
 		sendPanel.add(sendButton, BorderLayout.EAST);
 		frame.add(sendPanel, BorderLayout.SOUTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,8 +48,16 @@ public class SimpleChatClient {
 	}
 	
 	private void network() {
-		Thread chatReader = new Thread(new ChatReaderRunnable());
-		chatReader.start();
+		try {
+			sock = new Socket("127.0.0.1", 8888);
+			writer = new PrintWriter(sock.getOutputStream());
+			reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			Thread chatReader = new Thread(new ChatReaderRunnable());
+			chatReader.start();
+			chatDisplay.append("STATUS: connected to " + sock.toString() + "\n");
+		} catch (Exception e) {
+			chatDisplay.append("ERROR: " + e.getMessage() + "\n");
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -55,18 +66,35 @@ public class SimpleChatClient {
 	}
 	
 	private class SendButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent ev) {
 			sendText.requestFocus();
+			if ((sock == null) || !(sock.isConnected()) || (sock.isClosed())) {
+				chatDisplay.append("ERROR: Not connected\n");
+				sendText.setText("");
+				return;
+			}
 			if (sendText.getText().equals(""))
 				return;
-			chatDisplay.append("> " + sendText.getText() + "\n");
+			writer.println(sendText.getText());
+			writer.flush();
+			chatDisplay.append("< " + sendText.getText() + "\n");
 			sendText.setText("");
 		}
 	}
 	
 	private class ChatReaderRunnable implements Runnable {
 		public void run() {
-			
+			String line = null;
+			if ((sock == null) || !(sock.isConnected()) || (sock.isClosed()))
+				return;
+			try {
+				while ((line = reader.readLine()) != null)
+					chatDisplay.append("> " + line + "\n");
+				reader.close();
+				chatDisplay.append("STATUS: disconnected from " + sock.toString() + "\n");
+			} catch (IOException e) {
+				chatDisplay.append("ERROR: " + e.getMessage());
+			}
 		}
 	}
 }
