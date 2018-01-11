@@ -45,7 +45,8 @@ public class SimpleChatClient {
 	}
 	
 	private void network() {
-		
+		Thread chatReader = new Thread(new ChatReaderRunnable());
+		chatReader.start();
 	}
 	
 	public static void main(String[] args) {
@@ -60,6 +61,12 @@ public class SimpleChatClient {
 				return;
 			chatDisplay.append("> " + sendText.getText() + "\n");
 			sendText.setText("");
+		}
+	}
+	
+	private class ChatReaderRunnable implements Runnable {
+		public void run() {
+			
 		}
 	}
 }
