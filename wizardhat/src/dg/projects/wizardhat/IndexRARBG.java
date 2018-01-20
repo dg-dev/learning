@@ -1,6 +1,6 @@
 package dg.projects.wizardhat;
 
-public class RARBG implements WizardIndex {
+public class IndexRARBG implements WizardIndex {
 	public String getIndexName() {
 		return "RARBG";
 	}
