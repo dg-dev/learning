@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Event.*;
 
 public class BeatBox {
 	JFrame frame = new JFrame("BeatBox");
