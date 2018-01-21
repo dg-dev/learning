@@ -11,7 +11,10 @@ public class Wizard {
 	
 	public void start() {
 		for (WizardIndex i : indexes) {
-			System.out.println("Index loaded: " + i.getIndexName() + " (" + i.getIndexDescription() + ")");
+			System.out.println("index loaded: " + i.getIndexName() + " (" + i.getIndexDescription() + ")");
+			System.out.print("refreshing... ");
+			i.update();
+			System.out.println(i.getMedia());
 		}
 	}
 }

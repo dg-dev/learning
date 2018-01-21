@@ -22,4 +22,8 @@ public class Media {
 	public String getLink() {
 		return link;
 	}
+	
+	public String toString() {
+		return this.title;
+	}
 }
