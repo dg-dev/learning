@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,7 +57,8 @@ public class IndexRARBG implements WizardIndex {
 		    Document document = builder.parse(is);
 		    NodeList nodeList = document.getDocumentElement().getChildNodes();
 		    for (int i = 0; i < nodeList.getLength(); i++) {
-			    System.out.println(i);	
+		    	Node node = nodeList.item(i);
+			    System.out.println(i + " - " + node.getNodeName() + " (" + node.getNodeType() + ")");
 		    }
 		} catch (Exception e) {
 			e.printStackTrace();

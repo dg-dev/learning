@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) {
 		ArrayList<WizardIndex> indexes = new ArrayList<WizardIndex>();
 		try {
-			indexes.add(new IndexRARBG(new URL("https://www.reddit.com/.rss"), 600));
+			indexes.add(new IndexRARBG(new URL("https://www.reddit.com/r/news/.rss"), 600));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
