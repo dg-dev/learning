@@ -10,6 +10,9 @@ import org.w3c.dom.NodeList;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -49,16 +52,24 @@ public class IndexRARBG implements WizardIndex {
 	public void update() {
 		InputStream is = null;
 		try {
-			URLConnection urlConn = rssUrl.openConnection();
-		    urlConn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-		    is = urlConn.getInputStream();
+			//URLConnection urlConn = rssUrl.openConnection();
+		    //urlConn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+		    //is = urlConn.getInputStream();
 		    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		    DocumentBuilder builder = factory.newDocumentBuilder();
-		    Document document = builder.parse(is);
-		    NodeList nodeList = document.getDocumentElement().getChildNodes();
+		    //Document document = builder.parse(is);
+		    Document document = builder.parse(new File("C:\\Users\\Lyalya\\Desktop\\test.xml"));
+		    NodeList nodeList = document.getDocumentElement().getElementsByTagName("item");
 		    for (int i = 0; i < nodeList.getLength(); i++) {
 		    	Node node = nodeList.item(i);
-			    System.out.println(i + " - " + node.getNodeName() + " (" + node.getNodeType() + ")");
+		    	NodeList children = node.getChildNodes();
+		    	System.out.println(i + " - " + node.getNodeName() + " (" + node.getNodeType() + ")");
+			    for (int j = 0; j < children.getLength(); j++) {
+			    	if (children.item(j).getNodeType() != Node.ELEMENT_NODE)
+			    		continue;
+			    	System.out.println("\t" + j + " - " + children.item(j).getNodeName());
+			    	System.out.println("\t\t" + children.item(j).getFirstChild().getNodeValue());
+			    }
 		    }
 		} catch (Exception e) {
 			e.printStackTrace();
