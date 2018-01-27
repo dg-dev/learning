@@ -1,20 +1,30 @@
 package dg.projects.wizardhat;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.text.ParseException;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 public class IndexRARBG implements WizardIndex {
 	private String indexName = "RARBG";
@@ -49,27 +59,52 @@ public class IndexRARBG implements WizardIndex {
 		return this.indexDescription;
 	}
 	
+	private Media itemNodeToMedia(Node item) {
+		if ((item.getNodeType() != Node.ELEMENT_NODE) || !(item.getNodeName().equals("item")))
+			return null;
+		MediaType type = MediaType.MAGNET;
+		String title = ((Element) item).getElementsByTagName("title").item(0).getFirstChild().getNodeValue();
+		String linkEncoded = ((Element) item).getElementsByTagName("link").item(0).getFirstChild().getNodeValue();
+		String link = null;
+		try {
+			link = URLDecoder.decode(linkEncoded, "ASCII");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+    	}
+		String dateStr = ((Element) item).getElementsByTagName("pubDate").item(0).getFirstChild().getNodeValue();
+		Date date = null;
+		try {
+			//Tue, 23 Jan 2018 10:05:05 +0100
+			date = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z").parse(dateStr);
+		} catch(ParseException e) {
+			e.printStackTrace();
+		}
+		if ((title == null) || (link == null) || (date == null))
+			return null;
+		else
+			return new Media(type, title, link, date);
+	}
+	
 	public void update() {
 		InputStream is = null;
+		HttpURLConnection urlConn = null;
+		media = new ArrayList<Media>();
 		try {
-			//URLConnection urlConn = rssUrl.openConnection();
+			//urlConn = (HttpURLConnection) rssUrl.openConnection();
 		    //urlConn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-		    //is = urlConn.getInputStream();
+		    //urlConn.setReadTimeout(30000);
+		    //urlConn.setConnectTimeout(30000);
+			//is = urlConn.getInputStream();
 		    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		    DocumentBuilder builder = factory.newDocumentBuilder();
 		    //Document document = builder.parse(is);
 		    Document document = builder.parse(new File("C:\\Users\\Lyalya\\Desktop\\test.xml"));
 		    NodeList nodeList = document.getDocumentElement().getElementsByTagName("item");
 		    for (int i = 0; i < nodeList.getLength(); i++) {
-		    	Node node = nodeList.item(i);
-		    	NodeList children = node.getChildNodes();
-		    	System.out.println(i + " - " + node.getNodeName() + " (" + node.getNodeType() + ")");
-			    for (int j = 0; j < children.getLength(); j++) {
-			    	if (children.item(j).getNodeType() != Node.ELEMENT_NODE)
-			    		continue;
-			    	System.out.println("\t" + j + " - " + children.item(j).getNodeName());
-			    	System.out.println("\t\t" + children.item(j).getFirstChild().getNodeValue());
-			    }
+		    	Media item = itemNodeToMedia(nodeList.item(i));
+		    	if (item == null)
+		    		continue;
+		    	media.add(itemNodeToMedia(nodeList.item(i)));
 		    }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,6 +116,8 @@ public class IndexRARBG implements WizardIndex {
 					e.printStackTrace();
 				}
 			}
+			if (urlConn != null)
+				urlConn.disconnect();
 		}
 	}
 	
