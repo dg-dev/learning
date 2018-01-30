@@ -31,16 +31,11 @@ public class IndexRARBG implements WizardIndex {
 	private String indexDescription = "Check for RSS updates";
 	private int refreshDelay;
 	private URL rssUrl;
-	private ArrayList<Media> media;
+	private ArrayList<Media> media = new ArrayList<Media>();
 	
-	public IndexRARBG(URL rssUrl) throws MalformedURLException {
-		this(rssUrl, 900);
-	}
-	
-	public IndexRARBG(URL rssUrl, int refreshDelay) throws MalformedURLException {
-		this.media = new ArrayList<Media>();
-		this.refreshDelay = refreshDelay;
+	public IndexRARBG(URL rssUrl, int refreshDelay) {
 		this.rssUrl = rssUrl;
+		this.refreshDelay = refreshDelay;
 	}
 	
 	public int getRefreshDelay() {
