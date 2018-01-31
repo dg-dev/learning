@@ -14,30 +14,21 @@ public class Main {
 	private static WizardIndex createIndex(String suffix, Properties config) {
 		if ((suffix == null) || (config == null))
 			return null;
-		String indexName = config.getProperty("indexname" + suffix);
-		if (indexName == null)
-			return null;
-		String indexDelayStr = config.getProperty("indexdelay" + suffix);
-		if (indexDelayStr == null)
-			return null;
+		String indexName = config.getProperty("indexname" + suffix, "");
+		String indexDelayStr = config.getProperty("indexdelay" + suffix, "-1");
 		Integer indexDelay = null;
 		try {
 			indexDelay = Integer.valueOf(indexDelayStr);
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			indexDelay = new Integer("-1");
 		}
-		if (indexDelay == null)
-			return null;
-		String indexLinkStr = config.getProperty("indexlink" + suffix);
-		if (indexLinkStr == null)
-			return null;
+		String indexLinkStr = config.getProperty("indexlink" + suffix, "");
 		URL indexLink = null;
 		try {
 			indexLink = new URL(indexLinkStr);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		}
-		if (indexLink == null)
+		if ((indexName == "") || (indexDelay.intValue() < 0) || (indexLink == null))
 			return null;
 		WizardIndex index = null;
 		switch (indexName.toLowerCase()) {
